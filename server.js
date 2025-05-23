@@ -144,25 +144,6 @@ app.post('/api/discord-auth', async (req, res) => {
         });
     }
 });
-
-fetch("/.netlify/functions/purchase-notification", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    user: user?.username || "Desconhecido",
-    playerId: playerId,
-    total: totalValue.toFixed(2),
-    items: cart.map(item => ({
-      name: item.title,
-      quantity: item.quantity,
-      price: (item.price * item.quantity).toFixed(2)
-    })),
-    transactionId: `TRX-${Date.now()}`
-  })
-});
-
 // Rota de saúde
 app.get('/health', (req, res) => {
     res.json({ 
@@ -198,6 +179,7 @@ process.on('uncaughtException', (error) => {
     console.error('❌ Uncaught Exception:', error);
     process.exit(1);
 });
+document.querySelector('.cart-toggle').addEventListener('click', toggleCart);
 
 
 // Exemplos de uso das notificações:
