@@ -29,12 +29,3 @@
     "author": "Best RolePlay",
     "license": "MIT"
 }
-{
-  "user": "Teste#1234",
-  "playerId": "142",
-  "total": "59.90",
-  "items": [
-    { "name": "VIP Ouro", "quantity": 1, "price": "59.90" }
-  ],
-  "transactionId": "TRX-1234567890"
-}
