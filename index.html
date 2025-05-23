@@ -1485,24 +1485,38 @@
                 toggleCart();
                 loading.hide();
             }, 2000);
-            fetch("/.netlify/functions/purchase-notification", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    user: user?.username || "Desconhecido",
-                    playerId: playerId,
-                    total: totalValue.toFixed(2),
-                    items: cart.map(item => ({
-                    name: item.title,
-                    quantity: item.quantity,
-                    price: (item.price * item.quantity).toFixed(2)
-                    })),
-                    transactionId: `TRX-${Date.now()}`
-                })
-            });
-        }
+try {
+    const response = await fetch("/.netlify/functions/purchase-notification", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            user: user?.username || "Desconhecido",
+            playerId: playerId,
+            total: totalValue.toFixed(2),
+            items: cart.map(item => ({
+                name: item.title,
+                quantity: item.quantity,
+                price: (item.price * item.quantity).toFixed(2)
+            })),
+            transactionId: `TRX-${Date.now()}`
+        })
+    });
+
+    const result = await response.json();
+    
+    if (response.ok) {
+        console.log('Compra enviada com sucesso:', result);
+        // Redirecionar ou mostrar mensagem de sucesso
+    } else {
+        console.error('Erro na compra:', result);
+        // Mostrar erro para o usuário
+    }
+    } catch (error) {
+        console.error('Erro de conexão:', error);
+        // Mostrar erro de conexão
+    }
 
         // Fechar elementos ao clicar fora
         document.addEventListener('click', function(e) {
