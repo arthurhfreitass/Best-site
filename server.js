@@ -60,7 +60,6 @@ const DISCORD_CONFIG = {
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     redirectUri: process.env.DISCORD_REDIRECT_URI,
     apiEndpoint: 'https://discord.com/api/v10'
-    webhookUrl: process.env.DISCORD_WEBHOOK_URL // Novo: Webhook URL do Discord
 };
 
 // Verificar configurações
@@ -95,54 +94,6 @@ app.post('/api/discord-auth', async (req, res) => {
             }),
         });
 
-app.post('/api/discord-webhook', async (req, res) => {
-    try {
-        const { user, playerId, total, items } = req.body;
-
-        if (!user || !playerId || !total || !items) {
-            return res.status(400).json({ error: 'Dados incompletos' });
-        }
-
-        const message = {
-            username: 'Loja BestRP',
-            embeds: [
-                {
-                    title: '🛒 Novo Pedido Finalizado',
-                    color: 5814783,
-                    fields: [
-                        { name: '👤 Usuário', value: user, inline: true },
-                        { name: '🆔 ID do Jogador', value: playerId, inline: true },
-                        { name: '💰 Valor Total', value: `R$ ${total}`, inline: true },
-                        { name: '📦 Itens', value: items, inline: false }
-                    ],
-                    timestamp: new Date().toISOString()
-                }
-            ]
-        };
-
-        const webhook = DISCORD_CONFIG.webhookUrl;
-        if (!webhook) {
-            return res.status(500).json({ error: 'Webhook do Discord não configurado' });
-        }
-
-        const discordRes = await fetch(webhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(message)
-        });
-
-        if (!discordRes.ok) {
-            const err = await discordRes.text();
-            console.error('❌ Erro ao enviar para webhook:', err);
-            return res.status(500).json({ error: 'Erro ao enviar para o Discord' });
-        }
-
-        res.json({ success: true });
-    } catch (error) {
-        console.error('❌ Erro ao processar pedido:', error);
-        res.status(500).json({ error: 'Erro interno do servidor' });
-    }
-});
         if (!tokenResponse.ok) {
             const errorData = await tokenResponse.text();
             console.error('❌ Erro ao obter token:', errorData);
@@ -228,6 +179,184 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('uncaughtException', (error) => {
     console.error('❌ Uncaught Exception:', error);
     process.exit(1);
+});
+
+app.post('/api/purchase-notification', async (req, res) => {
+    try {
+        const { user, playerId, total, items, transactionId, timestamp } = req.body;
+
+        // Validar dados obrigatórios
+        if (!user || !playerId || !total || !items) {
+            return res.status(400).json({ 
+                error: 'Dados incompletos',
+                required: ['user', 'playerId', 'total', 'items']
+            });
+        }
+
+        console.log('🛒 Processando notificação de compra...');
+
+        // Formatar lista de itens
+        let itemsList = '';
+        if (Array.isArray(items)) {
+            itemsList = items.map(item => {
+                if (typeof item === 'object') {
+                    return `• ${item.name} - Qtd: ${item.quantity} - R$ ${item.price}`;
+                }
+                return `• ${item}`;
+            }).join('\n');
+        } else {
+            itemsList = items;
+        }
+
+        // Criar embed do Discord
+        const embed = {
+            title: '🛒 Nova Compra Realizada',
+            description: 'Um novo pedido foi finalizado na loja BestRP',
+            color: 0x00ff00, // Verde para sucesso
+            fields: [
+                {
+                    name: '👤 Usuário',
+                    value: `${user.username || user}`,
+                    inline: true
+                },
+                {
+                    name: '🆔 ID do Jogador',
+                    value: `${playerId}`,
+                    inline: true
+                },
+                {
+                    name: '💰 Valor Total',
+                    value: `R$ ${parseFloat(total).toFixed(2)}`,
+                    inline: true
+                },
+                {
+                    name: '📦 Itens Comprados',
+                    value: itemsList || 'Nenhum item especificado',
+                    inline: false
+                }
+            ],
+            footer: {
+                text: 'Sistema de Loja BestRP',
+                icon_url: 'https://cdn.discordapp.com/attachments/123456789/logo.png'
+            },
+            timestamp: timestamp || new Date().toISOString()
+        };
+
+        // Adicionar ID da transação se fornecido
+        if (transactionId) {
+            embed.fields.push({
+                name: '🔗 ID da Transação',
+                value: `${transactionId}`,
+                inline: true
+            });
+        }
+
+        // Criar mensagem para o webhook
+        const webhookMessage = {
+            username: 'Loja BestRP',
+            avatar_url: 'https://cdn.discordapp.com/attachments/123456789/avatar.png',
+            embeds: [embed]
+        };
+
+        // Enviar para o webhook do Discord
+        const discordResponse = await fetch(DISCORD_CONFIG.webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(webhookMessage)
+        });
+
+        if (!discordResponse.ok) {
+            const errorText = await discordResponse.text();
+            console.error('❌ Erro ao enviar para webhook do Discord:', errorText);
+            return res.status(500).json({ 
+                error: 'Erro ao enviar notificação para o Discord',
+                details: errorText
+            });
+        }
+
+        console.log('✅ Notificação enviada para o Discord com sucesso');
+
+        res.json({
+            success: true,
+            message: 'Notificação de compra enviada com sucesso',
+            timestamp: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('❌ Erro ao processar notificação de compra:', error);
+        res.status(500).json({
+            error: 'Erro interno do servidor',
+            details: error.message
+        });
+    }
+});
+
+// Rota para testar o webhook
+app.post('/api/test-webhook', async (req, res) => {
+    try {
+        const testMessage = {
+            username: 'Loja BestRP - Teste',
+            embeds: [{
+                title: '🧪 Teste de Webhook',
+                description: 'Esta é uma mensagem de teste para verificar se o webhook está funcionando corretamente.',
+                color: 0x0099ff,
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: 'Sistema de Testes'
+                }
+            }]
+        };
+
+        const response = await fetch(DISCORD_CONFIG.webhookUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(testMessage)
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            return res.status(500).json({ 
+                error: 'Webhook não está funcionando',
+                details: errorText
+            });
+        }
+
+        res.json({ 
+            success: true, 
+            message: 'Webhook testado com sucesso!' 
+        });
+
+    } catch (error) {
+        console.error('❌ Erro ao testar webhook:', error);
+        res.status(500).json({
+            error: 'Erro ao testar webhook',
+            details: error.message
+        });
+    }
+});
+
+// Rota de saúde
+app.get('/health', (req, res) => {
+    res.json({ 
+        status: 'OK', 
+        message: 'Servidor Discord Auth funcionando',
+        timestamp: new Date().toISOString(),
+        webhook_configured: !!DISCORD_CONFIG.webhookUrl
+    });
+});
+
+// Rota para verificar configuração
+app.get('/api/config', (req, res) => {
+    res.json({
+        clientId: DISCORD_CONFIG.clientId,
+        redirectUri: DISCORD_CONFIG.redirectUri,
+        configured: !!(DISCORD_CONFIG.clientId && DISCORD_CONFIG.clientSecret),
+        webhook_configured: !!DISCORD_CONFIG.webhookUrl
+    });
 });
 
 // Exemplos de uso das notificações:
