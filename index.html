@@ -201,386 +201,75 @@
         }
 
         /* Cart */
-        /* Cart - Versão Profissional e Maior */
         .cart {
             position: fixed;
             top: 50%;
-            right: -480px;
+            right: -400px;
             transform: translateY(-50%);
-            width: 450px;
-            background: linear-gradient(135deg, rgba(26, 26, 46, 0.98) 0%, rgba(30, 30, 55, 0.98) 100%);
-            border: 2px solid rgba(139, 69, 255, 0.4);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(20px);
-            box-shadow: 
-                0 25px 50px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(139, 69, 255, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            width: 350px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(139, 69, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: right 0.3s ease;
+            backdrop-filter: blur(10px);
             z-index: 1000;
-            max-height: 85vh;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
+            max-height: 80vh;
+            overflow-y: auto;
         }
-        
+
         .cart.open {
-            right: 25px;
-            transform: translateY(-50%) scale(1);
+            right: 20px;
         }
-        
-        .cart::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, #8b45ff, #da70d6, #8b45ff);
-            border-radius: 20px 20px 0 0;
-        }
-        
+
         .cart-toggle {
             position: fixed;
             top: 50%;
-            right: 25px;
+            right: 20px;
             transform: translateY(-50%);
-            background: linear-gradient(135deg, #8b45ff 0%, #da70d6 100%);
+            background: #8b45ff;
             color: white;
             border: none;
-            padding: 1.2rem;
+            padding: 1rem;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             z-index: 1001;
-            box-shadow: 
-                0 8px 32px rgba(139, 69, 255, 0.5),
-                0 0 0 1px rgba(255, 255, 255, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(139, 69, 255, 0.4);
         }
-        
-        .cart-toggle::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: all 0.3s ease;
-        }
-        
-        .cart-toggle:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-        
-        .cart-toggle:hover {
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 
-                0 12px 40px rgba(139, 69, 255, 0.6),
-                0 0 0 1px rgba(255, 255, 255, 0.2);
-        }
-        
-        .cart-toggle:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-        
-        .cart h3 {
-            text-align: center;
-            background: linear-gradient(135deg, #8b45ff, #da70d6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        
-        .cart-items-container {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 1.5rem;
-            padding-right: 8px;
-        }
-        
-        .cart-items-container::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .cart-items-container::-webkit-scrollbar-track {
-            background: rgba(139, 69, 255, 0.1);
-            border-radius: 3px;
-        }
-        
-        .cart-items-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #8b45ff, #da70d6);
-            border-radius: 3px;
-        }
-        
-        .cart-items-container::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #da70d6, #8b45ff);
-        }
-        
+
         .cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 1rem;
-            margin-bottom: 1rem;
-            border: 1px solid rgba(139, 69, 255, 0.2);
-            border-radius: 12px;
-            background: linear-gradient(135deg, rgba(139, 69, 255, 0.05) 0%, rgba(218, 112, 214, 0.05) 100%);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(139, 69, 255, 0.2);
         }
-        
-        .cart-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .cart-item:hover::before {
-            left: 100%;
-        }
-        
-        .cart-item:hover {
-            border-color: rgba(139, 69, 255, 0.4);
-            background: linear-gradient(135deg, rgba(139, 69, 255, 0.1) 0%, rgba(218, 112, 214, 0.1) 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(139, 69, 255, 0.2);
-        }
-        
+
         .cart-item-info {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            flex: 1;
+            gap: 0.3rem;
         }
-        
+
         .cart-item-name {
-            font-weight: 700;
+            font-weight: bold;
             color: #da70d6;
-            font-size: 1.1rem;
-            letter-spacing: 0.3px;
         }
-        
+
         .cart-item-quantity {
-            font-size: 0.95rem;
-            opacity: 0.8;
-            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            opacity: 0.7;
         }
-        
-        .cart-item-price {
-            font-weight: 600;
-            color: #8b45ff;
-            font-size: 1.1rem;
-        }
-        
-        .cart-item-controls {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-left: 1rem;
-        }
-        
-        .cart-item-controls button {
-            width: 32px;
-            height: 32px;
-            border: none;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #8b45ff, #da70d6);
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .cart-item-controls button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 15px rgba(139, 69, 255, 0.4);
-        }
-        
-        .cart-item-controls button:active {
-            transform: scale(0.9);
-        }
-        
+
         .cart-total {
-            font-size: 1.6rem;
-            font-weight: 800;
-            margin-top: 1.5rem;
-            padding: 1.5rem;
-            border: 2px solid transparent;
-            border-radius: 15px;
-            background: linear-gradient(135deg, rgba(139, 69, 255, 0.1), rgba(218, 112, 214, 0.1));
-            background-clip: padding-box;
-            position: relative;
-            text-align: center;
-            letter-spacing: 0.5px;
-        }
-        
-        .cart-total::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #8b45ff, #da70d6);
-            z-index: -1;
-            margin: -2px;
-        }
-        
-        .cart-total-amount {
-            background: linear-gradient(135deg, #8b45ff, #da70d6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .cart-buttons {
-            display: flex;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-        
-        .cart-buttons .buy-button {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .cart-buttons .buy-button:first-child {
-            background: linear-gradient(135deg, #00c851, #00a63f);
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 200, 81, 0.3);
-        }
-        
-        .cart-buttons .buy-button:first-child:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 200, 81, 0.4);
-            background: linear-gradient(135deg, #00a63f, #00c851);
-        }
-        
-        .cart-buttons .buy-button:last-child {
-            background: linear-gradient(135deg, #f44336, #d32f2f);
-            color: white;
-            box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
-        }
-        
-        .cart-buttons .buy-button:last-child:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(244, 67, 54, 0.4);
-            background: linear-gradient(135deg, #d32f2f, #f44336);
-        }
-        
-        .cart-buttons .buy-button:active {
-            transform: translateY(0);
-        }
-        
-        .cart-empty {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.1rem;
-        }
-        
-        .cart-empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-        
-        /* Badge do carrinho */
-        #cartBadge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: linear-gradient(135deg, #ff4444, #cc0000);
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            font-size: 12px;
+            font-size: 1.3rem;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-        
-        /* Animações de entrada */
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        
-        .cart-item {
-            animation: slideInRight 0.3s ease forwards;
-        }
-        
-        .cart-item:nth-child(2) { animation-delay: 0.1s; }
-        .cart-item:nth-child(3) { animation-delay: 0.2s; }
-        .cart-item:nth-child(4) { animation-delay: 0.3s; }
-        
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .cart {
-                width: 90vw;
-                right: -90vw;
-                padding: 2rem;
-            }
-            
-            .cart.open {
-                right: 5vw;
-            }
-            
-            .cart-toggle {
-                right: 15px;
-                padding: 1rem;
-                font-size: 1.2rem;
-            }
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #8b45ff;
+            color: #8b45ff;
+            text-align: center;
         }
 
         /* Checkout Modal Melhorado */
@@ -1235,32 +924,18 @@
 
 
     <!-- Cart -->
-    <button class="cart-toggle" onclick="toggleCart()">
-    🛒
-    <span id="cartBadge" style="display:none;"></span>
-    </button>
+    <button class="cart-toggle" onclick="toggleCart()">🛒<span id="cartBadge" style="display:none;position:absolute;top:-8px;right:-8px;background:#ff4444;border-radius:50%;width:20px;height:20px;font-size:12px;display:flex;align-items:center;justify-content:center;"></span></button>
     <div class="cart" id="cart">
-        <h3>🛒 Carrinho de Compras</h3>
-        <div class="cart-items-container">
-            <div id="cartItems">
-                <div class="cart-empty">
-                    <div class="cart-empty-icon">🛒</div>
-                    <p>Seu carrinho está vazio</p>
-                    <p style="font-size: 0.9rem; opacity: 0.7;">Adicione produtos para começar!</p>
-                </div>
-            </div>
-        </div>
-        <div class="cart-total">
-            Total: <span class="cart-total-amount" id="cartTotal">R$ 0,00</span>
-        </div>
-        <div class="cart-buttons">
-            <button class="buy-button" onclick="checkout()" id="checkoutBtn">
-                💳 Finalizar via PIX
-            </button>
-            <button class="buy-button" onclick="clearCart()">
-                🧹 Limpar Carrinho
-            </button>
-        </div>
+        <h3 style="text-align: center; color: #8b45ff; margin-bottom: 1rem;">🛒 Carrinho</h3>
+        <div id="cartItems"></div>
+        <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
+        <div style="display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1rem;">
+        <button class="buy-button" onclick="checkout()" id="checkoutBtn" style="flex: 1;">
+            Finalizar Compra via PIX
+        </button>
+        <button class="buy-button" onclick="clearCart()" style="flex: 1; background: #f44336;">
+            🧹 Limpar
+        </button>
     </div>
 
     <!-- Footer -->
@@ -1794,7 +1469,25 @@
         // Confirmar pagamento
         function confirmPayment() {
             loading.show('Processando', 'Confirmando seu pagamento...');
-            
+            fetch("/.netlify/functions/purchase-notification", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    user: user?.username || "Desconhecido",
+                    playerId: playerId,
+                    total: totalValue.toFixed(2),
+                    items: cart.map(item => ({
+                    name: item.title,
+                    quantity: item.quantity,
+                    price: (item.price * item.quantity).toFixed(2)
+                    })),
+                    transactionId: `TRX-${Date.now()}`
+                })
+                });
+
+
             setTimeout(() => {
                 const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
                 const totalValue = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
