@@ -1,31 +1,38 @@
 const fetch = require('node-fetch');
 
-const headers = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json'
-};
-
 exports.handler = async (event) => {
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json'
+  };
+
   if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers, body: '' };
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
   }
 
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers, body: JSON.stringify({ error: 'Method not allowed' }) };
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method Not Allowed' })
+    };
   }
 
   try {
-    const body = JSON.parse(event.body);
-    const { user, playerId, total, items, transactionId, timestamp } = body;
+    const { user, playerId, total, items, transactionId, timestamp } = JSON.parse(event.body);
 
     if (!user || !playerId || !total || !items) {
       return {
         statusCode: 400,
         headers,
         body: JSON.stringify({
-          error: 'Dados incompletos',
+          error: 'Dados obrigatórios ausentes',
           required: ['user', 'playerId', 'total', 'items']
         })
       };
@@ -39,9 +46,13 @@ exports.handler = async (event) => {
         { name: '👤 Usuário', value: user, inline: true },
         { name: '🆔 ID do Jogador', value: playerId, inline: true },
         { name: '💰 Valor Total', value: `R$ ${parseFloat(total).toFixed(2)}`, inline: true },
-        { name: '📦 Itens Comprados', value: Array.isArray(items)
-          ? items.map(i => `• ${i.name} - Qtd: ${i.quantity} - R$ ${i.price}`).join('\n')
-          : items, inline: false }
+        {
+          name: '📦 Itens Comprados',
+          value: Array.isArray(items)
+            ? items.map(i => `• ${i.name} - Qtd: ${i.quantity} - R$ ${i.price}`).join('\n')
+            : String(items),
+          inline: false
+        }
       ],
       timestamp: timestamp || new Date().toISOString(),
       footer: {
@@ -51,11 +62,7 @@ exports.handler = async (event) => {
     };
 
     if (transactionId) {
-      embed.fields.push({
-        name: '🔗 ID da Transação',
-        value: transactionId,
-        inline: true
-      });
+      embed.fields.push({ name: '🔗 ID da Transação', value: transactionId, inline: true });
     }
 
     const webhookUrl = process.env.DISCORD_WEBHOOK_URL;
@@ -64,7 +71,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ error: 'DISCORD_WEBHOOK_URL não configurado' })
+        body: JSON.stringify({ error: 'Webhook do Discord não configurado (env: DISCORD_WEBHOOK_URL)' })
       };
     }
 
@@ -79,25 +86,25 @@ exports.handler = async (event) => {
     });
 
     if (!response.ok) {
-      const error = await response.text();
+      const err = await response.text();
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ error: 'Falha ao enviar webhook', details: error })
+        body: JSON.stringify({ error: 'Erro ao enviar para o Discord', details: err })
       };
     }
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true, message: 'Notificação enviada' })
+      body: JSON.stringify({ success: true, message: 'Notificação enviada ao Discord com sucesso' })
     };
 
   } catch (err) {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: 'Erro inesperado', details: err.message })
+      body: JSON.stringify({ error: 'Erro interno no servidor', details: err.message })
     };
   }
 };
