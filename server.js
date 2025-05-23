@@ -60,6 +60,7 @@ const DISCORD_CONFIG = {
     clientSecret: process.env.DISCORD_CLIENT_SECRET,
     redirectUri: process.env.DISCORD_REDIRECT_URI,
     apiEndpoint: 'https://discord.com/api/v10'
+    webhookUrl: process.env.DISCORD_WEBHOOK_URL // Novo: Webhook URL do Discord
 };
 
 // Verificar configurações
