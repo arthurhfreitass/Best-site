@@ -836,85 +836,92 @@
 
     <!-- Payment Modal Melhorado -->
     <div class="payment-modal" id="paymentModal">
-        <div class="payment-dashboard">
-            <div class="payment-header">
-                <button class="payment-close" onclick="closePaymentModal()">✕</button>
-                <h2 class="payment-title">💳 Checkout Best RolePlay/h2>
-                <p class="payment-subtitle">Finalize sua compra de forma segura</p>
-            </div>
-            
-            <div class="payment-content">
-                <div class="payment-left">
-                    <!-- Resumo do Pedido -->
-                    <div class="payment-section">
-                        <div class="section-header">
-                            <span>🛒</span>
-                            <span>Resumo do Pedido</span>
-                        </div>
-                        <div class="payment-items" id="paymentItems"></div>
-                    </div>
+    <div class="payment-dashboard">
+        <div class="payment-header">
+            <button class="payment-close" onclick="closePaymentModal()">✕</button>
+            <h2 class="payment-title">💳 Checkout Best RolePlay</h2>
+            <p class="payment-subtitle">Finalize sua compra de forma segura</p>
+        </div>
 
-                    <!-- Total -->
-                    <div class="payment-total-section">
-                        <div class="section-header" style="border: none; margin-bottom: 0.5rem;">
-                            <span>💰</span>
-                            <span>Total a Pagar</span>
-                        </div>
-                        <div class="payment-total" id="paymentTotal"></div>
+        <div class="payment-content">
+            <div class="payment-left">
+                <!-- Resumo do Pedido -->
+                <div class="payment-section">
+                    <div class="section-header">
+                        <span>🛒</span>
+                        <span>Resumo do Pedido</span>
                     </div>
+                    <div class="payment-items" id="paymentItems"></div>
                 </div>
 
-                <div class="payment-right">
-                    <!-- PIX -->
-                    <div class="pix-section">
-                        <div class="pix-header">
-                            <div class="pix-title">
-                                <span>📱</span>
-                                <span>Pagamento PIX</span>
-                            </div>
-                            <p class="pix-subtitle">Aprovação instantânea</p>
+                <!-- Total -->
+                <div class="payment-total-section">
+                    <div class="section-header" style="border: none; margin-bottom: 0.5rem;">
+                        <span>💰</span>
+                        <span>Total a Pagar</span>
+                    </div>
+                    <div class="payment-total" id="paymentTotal"></div>
+                </div>
+            </div>
+
+            <div class="payment-right">
+                <!-- PIX -->
+                <div class="pix-section">
+                    <div class="pix-header">
+                        <div class="pix-title">
+                            <span>📱</span>
+                            <span>Pagamento PIX</span>
                         </div>
-                        
-                        <div class="pix-qr-container">
-                            <div class="pix-qr">
-                                <div>
-                                    <strong>QR Code PIX</strong><br>
-                                    <small>Escaneie com seu banco</small>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="pix-code" id="pixCode">
-                            00020126580014BR.GOV.BCB.PIX0136best-roleplay-store@email.com52040000530398654
-                        </div>
-                        
-                        <button class="copy-button" onclick="copyPixCode()">
-                            📋 Copiar Código PIX
-                        </button>
+                        <p class="pix-subtitle">Aprovação instantânea</p>
                     </div>
 
-                    <!-- Instruções -->
-                    <div class="payment-instructions">
-                        <div class="instructions-title">
-                            <span>📋</span>
-                            <span>Como pagar</span>
+                    <div class="pix-qr-container">
+                        <div class="pix-qr">
+                            <div>
+                                <strong>QR Code PIX</strong><br>
+                                <small>Escaneie com seu banco</small>
+                            </div>
                         </div>
-                        <ol class="instructions-list">
-                            <li>Abra o app do seu banco</li>
-                            <li>Escolha a opção PIX</li>
-                            <li>Escaneie o QR Code ou cole o código</li>
-                            <li>Confirme o pagamento</li>
-                            <li>Envie o comprovante no Discord</li>
-                        </ol>
                     </div>
-                    
-                    <button class="confirm-payment-btn" onclick="confirmPayment()">
-                        ✅ Já fiz o pagamento
+
+                    <div class="pix-code" id="pixCode">
+                        00020126580014BR.GOV.BCB.PIX0136best-roleplay-store@email.com52040000530398654
+                    </div>
+
+                    <button class="copy-button" onclick="copyPixCode()">
+                        📋 Copiar Código PIX
                     </button>
                 </div>
+
+                <!-- Instruções -->
+                <div class="payment-instructions">
+                    <div class="instructions-title">
+                        <span>📋</span>
+                        <span>Como pagar</span>
+                    </div>
+                    <ol class="instructions-list">
+                        <li>Abra o app do seu banco</li>
+                        <li>Escolha a opção PIX</li>
+                        <li>Escaneie o QR Code ou cole o código</li>
+                        <li>Confirme o pagamento</li>
+                        <li>Envie o comprovante no Discord</li>
+                    </ol>
+                </div>
+
+                <!-- 🔽 CAMPO DE ID AQUI -->
+                <input type="text" id="playerId" placeholder="Seu ID no servidor"
+                    style="margin-top: 1rem; padding: 0.8rem; border-radius: 10px;
+                    border: 1px solid #8b45ff; background: rgba(255,255,255,0.05);
+                    color: white; font-size: 1rem; width: 100%;" />
+
+                <button class="confirm-payment-btn" onclick="confirmPayment()">
+                    ✅ Já fiz o pagamento
+                </button>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Cart -->
     <button class="cart-toggle" onclick="toggleCart()">🛒<span id="cartBadge" style="display:none;position:absolute;top:-8px;right:-8px;background:#ff4444;border-radius:50%;width:20px;height:20px;font-size:12px;display:flex;align-items:center;justify-content:center;"></span></button>
@@ -922,8 +929,12 @@
         <h3 style="text-align: center; color: #8b45ff; margin-bottom: 1rem;">🛒 Carrinho</h3>
         <div id="cartItems"></div>
         <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
-        <button class="buy-button" onclick="checkout()" style="margin-top: 1rem;" id="checkoutBtn">
+        <div style="display: flex; justify-content: space-between; gap: 0.5rem; margin-top: 1rem;">
+        <button class="buy-button" onclick="checkout()" id="checkoutBtn" style="flex: 1;">
             Finalizar Compra via PIX
+        </button>
+        <button class="buy-button" onclick="clearCart()" style="flex: 1; background: #f44336;">
+            🧹 Limpar
         </button>
     </div>
 
