@@ -1238,30 +1238,30 @@
     <button class="cart-toggle" onclick="toggleCart()">
     🛒
     <span id="cartBadge" style="display:none;"></span>
-</button>
-<div class="cart" id="cart">
-    <h3>🛒 Carrinho de Compras</h3>
-    <div class="cart-items-container">
-        <div id="cartItems">
-            <div class="cart-empty">
-                <div class="cart-empty-icon">🛒</div>
-                <p>Seu carrinho está vazio</p>
-                <p style="font-size: 0.9rem; opacity: 0.7;">Adicione produtos para começar!</p>
+    </button>
+    <div class="cart" id="cart">
+        <h3>🛒 Carrinho de Compras</h3>
+        <div class="cart-items-container">
+            <div id="cartItems">
+                <div class="cart-empty">
+                    <div class="cart-empty-icon">🛒</div>
+                    <p>Seu carrinho está vazio</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Adicione produtos para começar!</p>
+                </div>
             </div>
         </div>
+        <div class="cart-total">
+            Total: <span class="cart-total-amount" id="cartTotal">R$ 0,00</span>
+        </div>
+        <div class="cart-buttons">
+            <button class="buy-button" onclick="checkout()" id="checkoutBtn">
+                💳 Finalizar via PIX
+            </button>
+            <button class="buy-button" onclick="clearCart()">
+                🧹 Limpar Carrinho
+            </button>
+        </div>
     </div>
-    <div class="cart-total">
-        Total: <span class="cart-total-amount" id="cartTotal">R$ 0,00</span>
-    </div>
-    <div class="cart-buttons">
-        <button class="buy-button" onclick="checkout()" id="checkoutBtn">
-            💳 Finalizar via PIX
-        </button>
-        <button class="buy-button" onclick="clearCart()">
-            🧹 Limpar Carrinho
-        </button>
-    </div>
-</div>
 
     <!-- Footer -->
     <footer class="footer">
