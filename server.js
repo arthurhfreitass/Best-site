@@ -94,6 +94,54 @@ app.post('/api/discord-auth', async (req, res) => {
             }),
         });
 
+app.post('/api/discord-webhook', async (req, res) => {
+    try {
+        const { user, playerId, total, items } = req.body;
+
+        if (!user || !playerId || !total || !items) {
+            return res.status(400).json({ error: 'Dados incompletos' });
+        }
+
+        const message = {
+            username: 'Loja BestRP',
+            embeds: [
+                {
+                    title: '🛒 Novo Pedido Finalizado',
+                    color: 5814783,
+                    fields: [
+                        { name: '👤 Usuário', value: user, inline: true },
+                        { name: '🆔 ID do Jogador', value: playerId, inline: true },
+                        { name: '💰 Valor Total', value: `R$ ${total}`, inline: true },
+                        { name: '📦 Itens', value: items, inline: false }
+                    ],
+                    timestamp: new Date().toISOString()
+                }
+            ]
+        };
+
+        const webhook = DISCORD_CONFIG.webhookUrl;
+        if (!webhook) {
+            return res.status(500).json({ error: 'Webhook do Discord não configurado' });
+        }
+
+        const discordRes = await fetch(webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(message)
+        });
+
+        if (!discordRes.ok) {
+            const err = await discordRes.text();
+            console.error('❌ Erro ao enviar para webhook:', err);
+            return res.status(500).json({ error: 'Erro ao enviar para o Discord' });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('❌ Erro ao processar pedido:', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+});
         if (!tokenResponse.ok) {
             const errorData = await tokenResponse.text();
             console.error('❌ Erro ao obter token:', errorData);
