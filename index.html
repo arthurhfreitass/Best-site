@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best RolePlay - Loja</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(139, 69, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139, 69, 255, 0.3);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #8b45ff;
+            text-shadow: 0 0 10px rgba(139, 69, 255, 0.5);
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 10px rgba(139, 69, 255, 0.5));
+        }
+
+        .discord-login {
+            background: linear-gradient(45deg, #7289da, #5865f2);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .discord-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(114, 137, 218, 0.4);
+        }
+
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #8b45ff;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: radial-gradient(circle at center, rgba(139, 69, 255, 0.2), transparent 70%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #8b45ff, #da70d6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(139, 69, 255, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        /* Products Grid */
+        .products-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #8b45ff;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: rgba(139, 69, 255, 0.1);
+            border: 1px solid rgba(139, 69, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(139, 69, 255, 0.3);
+            border-color: #8b45ff;
+        }
+
+        .product-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #8b45ff;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #da70d6;
+        }
+
+        .product-description {
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #8b45ff;
+            margin-bottom: 1.5rem;
+        }
+
+        .buy-button {
+            background: linear-gradient(45deg, #8b45ff, #da70d6);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .buy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(139, 69, 255, 0.4);
+        }
+
+        .buy-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.3);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(139, 69, 255, 0.3);
+        }
+
+        /* Cart */
+        .cart {
+            position: fixed;
+            top: 50%;
+            right: -400px;
+            transform: translateY(-50%);
+            width: 350px;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(139, 69, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: right 0.3s ease;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .cart.open {
+            right: 20px;
+        }
+
+        .cart-toggle {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background: #8b45ff;
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 1001;
+            box-shadow: 0 4px 20px rgba(139, 69, 255, 0.4);
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(139, 69, 255, 0.2);
+        }
+
+        .cart-item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .cart-item-name {
+            font-weight: bold;
+            color: #da70d6;
+        }
+
+        .cart-item-quantity {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .cart-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #8b45ff;
+            color: #8b45ff;
+            text-align: center;
+        }
+
+        /* Checkout Modal Melhorado */
+        .payment-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .payment-modal.active {
+            display: flex;
+        }
+
+        .payment-dashboard {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid #8b45ff;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(139, 69, 255, 0.4);
+        }
+
+        .payment-header {
+            background: linear-gradient(45deg, #8b45ff, #da70d6);
+            padding: 2rem;
+            border-radius: 18px 18px 0 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .payment-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .payment-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .payment-title {
+            font-size: 2.2rem;
+            color: white;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .payment-subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .payment-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .payment-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .payment-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .payment-section {
+            background: rgba(139, 69, 255, 0.1);
+            border: 1px solid rgba(139, 69, 255, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #da70d6;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid rgba(139, 69, 255, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .payment-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .payment-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border-left: 3px solid #8b45ff;
+        }
+
+        .payment-item-left {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .payment-item-icon {
+            font-size: 1.5rem;
+        }
+
+        .payment-item-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .payment-item-name {
+            font-weight: bold;
+            color: white;
+        }
+
+        .payment-item-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .payment-item-price {
+            font-weight: bold;
+            color: #00ff7f;
+            font-size: 1.1rem;
+        }
+
+        .payment-total-section {
+            background: linear-gradient(45deg, rgba(139, 69, 255, 0.2), rgba(218, 112, 214, 0.2));
+            border: 2px solid #8b45ff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .payment-total {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00ff7f;
+            text-shadow: 0 0 10px rgba(0, 255, 127, 0.5);
+        }
+
+        .pix-section {
+            background: linear-gradient(135deg, rgba(0, 255, 127, 0.1), rgba(50, 205, 50, 0.1));
+            border: 2px solid #00ff7f;
+            border-radius: 15px;
+            padding: 2rem;
+        }
+
+        .pix-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .pix-title {
+            font-size: 1.8rem;
+            color: #00ff7f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pix-subtitle {
+            color: rgba(0, 255, 127, 0.8);
+            font-size: 1rem;
+        }
+
+        .pix-qr-container {
+            display: flex;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .pix-qr {
+            width: 180px;
+            height: 180px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-size: 0.8rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 255, 127, 0.3);
+        }
+
+        .pix-code {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ff7f;
+            border-radius: 10px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #00ff7f;
+            margin: 1rem 0;
+            word-break: break-all;
+            text-align: center;
+        }
+
+        .copy-button {
+            background: linear-gradient(45deg, #00ff7f, #32cd32);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-size: 1rem;
+        }
+
+        .copy-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 127, 0.4);
+        }
+
+        .payment-instructions {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.4);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .instructions-title {
+            color: #ffc107;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .instructions-list {
+            color: white;
+            opacity: 0.9;
+            padding-left: 1.5rem;
+        }
+
+        .instructions-list li {
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .confirm-payment-btn {
+            background: linear-gradient(45deg, #00ff7f, #32cd32);
+            color: white;
+            border: none;
+            padding: 1.2rem 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .confirm-payment-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 127, 0.4);
+        }
+
+        /* Sistema de Notificações */
+        .notifications-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .notification {
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+            border: 1px solid;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            min-width: 300px;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transform: translateX(100%);
+            opacity: 0;
+            animation: slideInNotification 0.5s ease forwards;
+            pointer-events: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--notification-color);
+        }
+
+        .notification.success {
+            --notification-color: #4caf50;
+            border-color: rgba(76, 175, 80, 0.5);
+            color: #4caf50;
+        }
+
+        .notification.error {
+            --notification-color: #f44336;
+            border-color: rgba(244, 67, 54, 0.5);
+            color: #f44336;
+        }
+
+        .notification.warning {
+            --notification-color: #ff9800;
+            border-color: rgba(255, 152, 0, 0.5);
+            color: #ff9800;
+        }
+
+        .notification.info {
+            --notification-color: #2196f3;
+            border-color: rgba(33, 150, 243, 0.5);
+            color: #2196f3;
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .notification-icon {
+            font-size: 1.4rem;
+        }
+
+        .notification-title {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .notification-message {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-left: 2.2rem;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            padding: 0.2rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .notification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--notification-color);
+            animation: notificationProgress 4s linear forwards;
+        }
+
+        @keyframes slideInNotification {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutNotification {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes notificationProgress {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Loading Overlay Melhorado */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(139, 69, 255, 0.3);
+            border-top: 4px solid #8b45ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: #8b45ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-subtext {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                padding: 0 1rem;
+            }
+            
+            .logo {
+                font-size: 1.4rem;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+
+            .payment-title {
+                font-size: 1.8rem;
+            }
+
+            .notification {
+                min-width: 280px;
+                max-width: calc(100vw - 40px);
+            }
+
+            .notifications-container {
+                right: 10px;
+                left: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Container de Notificações -->
+    <div class="notifications-container" id="notificationsContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjQwIiByeD0iMjAiIGZpbGw9IiM4YjQ1ZmYiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Ik0xMiAyQzYuNDggMiAyIDYuNDggMiAxMnM0LjQ4IDEwIDEwIDEwIDEwLTQuNDggMTAtMTBTMTcuNTIgMiAxMiAyem0wIDE4Yy00LjQxIDAtOC0zLjU5LTgtOHMzLjU5LTggOC04IDggMy41OSA4IDgtMy41OSA4LTggOHoiIGZpbGw9IndoaXRlIi8+CjxwYXRoIGQ9Ik0xMiA2djZsNC0yLTQtNHoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K" alt="Best RolePlay" class="logo-img">
+                Best RolePlay
+            </div>
+            <div class="auth-section">
+                <button class="discord-login" id="discordLogin">
+                    <span>🎮</span> Entrar com Discord
+                </button>
+                <div class="user-info" id="userInfo">
+                    <img class="user-avatar" id="userAvatar" src="" alt="Avatar">
+                    <span id="userName"></span>
+                    <button onclick="logout()">Sair</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Best RolePlay Store</h1>
+        <p>Os melhores produtos para sua experiência de roleplay</p>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <h2 class="section-title">Nossos Produtos</h2>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will be generated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Payment Modal Melhorado -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-dashboard">
+            <div class="payment-header">
+                <button class="payment-close" onclick="closePaymentModal()">✕</button>
+                <h2 class="payment-title">💳 Checkout Profissional</h2>
+                <p class="payment-subtitle">Finalize sua compra de forma segura</p>
+            </div>
+            
+            <div class="payment-content">
+                <div class="payment-left">
+                    <!-- Resumo do Pedido -->
+                    <div class="payment-section">
+                        <div class="section-header">
+                            <span>🛒</span>
+                            <span>Resumo do Pedido</span>
+                        </div>
+                        <div class="payment-items" id="paymentItems"></div>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="payment-total-section">
+                        <div class="section-header" style="border: none; margin-bottom: 0.5rem;">
+                            <span>💰</span>
+                            <span>Total a Pagar</span>
+                        </div>
+                        <div class="payment-total" id="paymentTotal"></div>
+                    </div>
+                </div>
+
+                <div class="payment-right">
+                    <!-- PIX -->
+                    <div class="pix-section">
+                        <div class="pix-header">
+                            <div class="pix-title">
+                                <span>📱</span>
+                                <span>Pagamento PIX</span>
+                            </div>
+                            <p class="pix-subtitle">Aprovação instantânea</p>
+                        </div>
+                        
+                        <div class="pix-qr-container">
+                            <div class="pix-qr">
+                                <div>
+                                    <strong>QR Code PIX</strong><br>
+                                    <small>Escaneie com seu banco</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="pix-code" id="pixCode">
+                            00020126580014BR.GOV.BCB.PIX0136best-roleplay-store@email.com52040000530398654
+                        </div>
+                        
+                        <button class="copy-button" onclick="copyPixCode()">
+                            📋 Copiar Código PIX
+                        </button>
+                    </div>
+
+                    <!-- Instruções -->
+                    <div class="payment-instructions">
+                        <div class="instructions-title">
+                            <span>📋</span>
+                            <span>Como pagar</span>
+                        </div>
+                        <ol class="instructions-list">
+                            <li>Abra o app do seu banco</li>
+                            <li>Escolha a opção PIX</li>
+                            <li>Escaneie o QR Code ou cole o código</li>
+                            <li>Confirme o pagamento</li>
+                            <li>Envie o comprovante no Discord</li>
+                        </ol>
+                    </div>
+                    
+                    <button class="confirm-payment-btn" onclick="confirmPayment()">
+                        ✅ Já fiz o pagamento
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart -->
+    <button class="cart-toggle" onclick="toggleCart()">🛒<span id="cartBadge" style="display:none;position:absolute;top:-8px;right:-8px;background:#ff4444;border-radius:50%;width:20px;height:20px;font-size:12px;display:flex;align-items:center;justify-content:center;"></span></button>
+    <div class="cart" id="cart">
+        <h3 style="text-align: center; color: #8b45ff; margin-bottom: 1rem;">🛒 Carrinho</h3>
+        <div id="cartItems"></div>
+        <div class="cart-total" id="cartTotal">Total: R$ 0,00</div>
+        <button class="buy-button" onclick="checkout()" style="margin-top: 1rem;" id="checkoutBtn">
+            Finalizar Compra via PIX
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 Best RolePlay. Todos os direitos reservados.</p>
+        <p>Discord: Best RolePlay Community</p>
+    </footer>
+
+    <script>
+        // ====== CONFIGURAÇÃO DE PRODUTOS (FÁCIL DE EDITAR) ======
+        const PRODUCTS = [
+            {
+                id: 1,
+                title: "VIP Mensal",
+                description: "Acesso VIP completo por 30 dias com benefícios exclusivos",
+                price: 25.00,
+                icon: "👑"
+            },
+            {
+                id: 2,
+                title: "Dinheiro Virtual",
+                description: "100.000 em dinheiro virtual para usar no servidor",
+                price: 15.00,
+                icon: "💰"
+            },
+            {
+                id: 3,
+                title: "Carro Premium",
+                description: "Acesso a veículos premium exclusivos",
+                price: 35.00,
+                icon: "🏎️"
+            },
+            {
+                id: 4,
+                title: "Casa de Luxo",
+                description: "Propriedade exclusiva em área nobre",
+                price: 50.00,
+                icon: "🏠"
+            },
+            {
+                id: 5,
+                title: "Kit Empresário",
+                description: "Itens especiais para roleplay empresarial",
+                price: 30.00,
+                icon: "💼"
+            },
+            {
+                id: 6,
+                title: "Armas Especiais",
+                description: "Arsenal exclusivo para membros VIP",
+                price: 20.00,
+                icon: "🔫"
+            }
+        ];
+
+        // ====== CONFIGURAÇÃO DO DISCORD ======
+        const DISCORD_CONFIG = {
+            clientId: '1374533327746236537',
+            redirectUri: window.location.origin,
+            scope: 'identify email',
+            apiEndpoint: 'https://discord.com/api/v10'
+        };
+
+        // Estado da aplicação
+        let user = null;
+        let cart = [];
+        let isLoggedIn = false;
+
+        // ====== SISTEMA DE NOTIFICAÇÕES AVANÇADO ======
+        class NotificationSystem {
+            constructor() {
+                this.container = document.getElementById('notificationsContainer');
+                this.notifications = [];
+            }
+
+            show(title, message, type = 'info', duration = 4000) {
+                const notification = this.createNotification(title, message, type, duration);
+                this.container.appendChild(notification);
+                this.notifications.push(notification);
+
+                // Remover automaticamente
+                setTimeout(() => {
+                    this.remove(notification);
+                }, duration);
+
+                return notification;
+            }
+
+            createNotification(title, message, type, duration) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+
+                const icons = {
+                    success: '✅',
+                    error: '❌',
+                    warning: '⚠️',
+                    info: 'ℹ️',
+                    loading: '⏳',
+                    cart: '🛒',
+                    payment: '💳',
+                    login: '🎮'
+                };
+
+                notification.innerHTML = `
+                    <div class="notification-header">
+                        <span class="notification-icon">${icons[type] || icons.info}</span>
+                        <span class="notification-title">${title}</span>
+                    </div>
+                    <div class="notification-message">${message}</div>
+                    <button class="notification-close" onclick="notifications.remove(this.parentElement)">×</button>
+                    <div class="notification-progress"></div>
+                `;
+
+                // Fazer aparecer
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                    notification.style.opacity = '1';
+                }, 100);
+
+                return notification;
+            }
+
+            remove(notification) {
+                if (!notification || !notification.parentElement) return;
+
+                notification.style.animation = 'slideOutNotification 0.3s ease forwards';
+                
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.parentElement.removeChild(notification);
+                    }
+                    this.notifications = this.notifications.filter(n => n !== notification);
+                }, 300);
+            }
+
+            success(title, message) {
+                return this.show(title, message, 'success');
+            }
+
+            error(title, message) {
+                return this.show(title, message, 'error', 5000);
+            }
+
+            warning(title, message) {
+                return this.show(title, message, 'warning', 4500);
+            }
+
+            info(title, message) {
+                return this.show(title, message, 'info');
+            }
+
+            loading(title, message) {
+                return this.show(title, message, 'loading', 8000);
+            }
+
+            cart(title, message) {
+                return this.show(title, message, 'cart', 3000);
+            }
+
+            payment(title, message) {
+                return this.show(title, message, 'payment', 5000);
+            }
+
+            login(title, message) {
+                return this.show(title, message, 'login', 4000);
+            }
+        }
+
+        // Instanciar sistema de notificações
+        const notifications = new NotificationSystem();
+
+        // ====== SISTEMA DE LOADING MELHORADO ======
+        class LoadingSystem {
+            show(title, subtitle = '') {
+                const existing = document.getElementById('loadingOverlay');
+                if (existing) existing.remove();
+
+                const loading = document.createElement('div');
+                loading.id = 'loadingOverlay';
+                loading.className = 'loading-overlay';
+                loading.innerHTML = `
+                    <div class="loading-content">
+                        <div class="loading-spinner"></div>
+                        <div class="loading-text">${title}</div>
+                        <div class="loading-subtext">${subtitle}</div>
+                    </div>
+                `;
+                document.body.appendChild(loading);
+                document.body.style.overflow = 'hidden';
+            }
+
+            hide() {
+                const loading = document.getElementById('loadingOverlay');
+                if (loading) {
+                    loading.remove();
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+
+        const loading = new LoadingSystem();
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            notifications.info('Sistema Iniciado', 'Bem-vindo à Best RolePlay Store!');
+            generateProducts();
+            checkAuth();
+            setupDiscordLogin();
+            handleDiscordCallback();
+        });
+
+        // Gerar produtos na grid
+        function generateProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            PRODUCTS.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-icon">${product.icon}</div>
+                    <h3 class="product-title">${product.title}</h3>
+                    <p class="product-description">${product.description}</p>
+                    <div class="product-price">R$ ${product.price.toFixed(2)}</div>
+                    <button class="buy-button" onclick="addToCart(${product.id})" ${!isLoggedIn ? 'disabled' : ''}>
+                        ${!isLoggedIn ? 'Faça login para comprar' : 'Adicionar ao Carrinho'}
+                    </button>
+                `;
+                grid.appendChild(productCard);
+            });
+
+            if (!isLoggedIn) {
+                notifications.warning('Login Necessário', 'Faça login com Discord para comprar produtos');
+            }
+        }
+
+        // Configurar login do Discord
+        function setupDiscordLogin() {
+            document.getElementById('discordLogin').addEventListener('click', function() {
+                notifications.loading('Redirecionando', 'Conectando com Discord...');
+                setTimeout(() => {
+                    initiateDiscordLogin();
+                }, 1000);
+            });
+        }
+
+        // Iniciar login do Discord
+        function initiateDiscordLogin() {
+            try {
+                const params = new URLSearchParams({
+                    client_id: DISCORD_CONFIG.clientId,
+                    redirect_uri: DISCORD_CONFIG.redirectUri,
+                    response_type: 'code',
+                    scope: DISCORD_CONFIG.scope
+                });
+
+                window.location.href = `https://discord.com/api/oauth2/authorize?${params}`;
+            } catch (error) {
+                loading.hide();
+                notifications.error('Erro de Login', 'Não foi possível conectar com o Discord');
+            }
+        }
+
+        // Processar callback do Discord
+        async function handleDiscordCallback() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+
+            if (code) {
+                try {
+                    loading.show('Processando Login', 'Autenticando com Discord...');
+                    
+                    // Simular processamento (usar sua função real aqui)
+                    const response = await fetch('/.netlify/functions/discord-auth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ code })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Falha na autenticação');
+                    }
+
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        handleLoginSuccess(data.user);
+                    } else {
+                        throw new Error(data.error || 'Erro desconhecido');
+                    }
+                    
+                    // Limpar URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                } catch (error) {
+                    console.error('Erro no login:', error);
+                    notifications.error('Erro de Login', 'Não foi possível fazer login. Tente novamente.');
+                } finally {
+                    loading.hide();
+                }
+            }
+        }
+
+        // Manipular sucesso do login
+        function handleLoginSuccess(userData) {
+            user = userData;
+            isLoggedIn = true;
+            
+            document.getElementById('discordLogin').style.display = 'none';
+            document.getElementById('userInfo').style.display = 'flex';
+            
+            const displayName = userData.discriminator && userData.discriminator !== '0' 
+                ? `${userData.username}#${userData.discriminator}`
+                : userData.username;
+                
+            document.getElementById('userName').textContent = displayName;
+            document.getElementById('userAvatar').src = userData.avatar;
+            
+            generateProducts();
+            updateCart();
+            
+            // Salvar no localStorage
+            localStorage.setItem('user', JSON.stringify(userData));
+            localStorage.setItem('loginTime', Date.now().toString());
+            
+            notifications.login('Login Realizado', `Bem-vindo, ${userData.username}!`);
+        }
+
+        // Verificar autenticação
+        function checkAuth() {
+            const savedUser = localStorage.getItem('user');
+            const loginTime = localStorage.getItem('loginTime');
+            
+            if (savedUser && loginTime) {
+                const sevenDays = 7 * 24 * 60 * 60 * 1000;
+                if (Date.now() - parseInt(loginTime) < sevenDays) {
+                    const userData = JSON.parse(savedUser);
+                    handleLoginSuccess(userData);
+                    notifications.info('Sessão Restaurada', 'Você já estava logado!');
+                } else {
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('loginTime');
+                    notifications.warning('Sessão Expirada', 'Faça login novamente');
+                }
+            }
+        }
+
+        // Logout
+        function logout() {
+            loading.show('Fazendo Logout', 'Desconectando...');
+            
+            setTimeout(() => {
+                user = null;
+                isLoggedIn = false;
+                cart = [];
+                
+                document.getElementById('discordLogin').style.display = 'block';
+                document.getElementById('userInfo').style.display = 'none';
+                
+                localStorage.removeItem('user');
+                localStorage.removeItem('loginTime');
+                generateProducts();
+                updateCart();
+                
+                loading.hide();
+                notifications.info('Logout Realizado', 'Você foi desconectado com sucesso');
+            }, 1000);
+        }
+
+        // Adicionar ao carrinho
+        function addToCart(productId) {
+            if (!isLoggedIn) {
+                notifications.warning('Login Necessário', 'Faça login com Discord para comprar');
+                return;
+            }
+
+            const product = PRODUCTS.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+                notifications.cart('Item Atualizado', `${product.title} (${existingItem.quantity}x) no carrinho`);
+            } else {
+                cart.push({...product, quantity: 1});
+                notifications.cart('Item Adicionado', `${product.title} foi adicionado ao carrinho`);
+            }
+
+            updateCart();
+        }
+
+        // Atualizar carrinho
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const cartBadge = document.getElementById('cartBadge');
+
+            cartItems.innerHTML = '';
+            let total = 0;
+            let totalItems = 0;
+
+            cart.forEach((item, index) => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.icon} ${item.title}</div>
+                        <div class="cart-item-quantity">Quantidade: ${item.quantity}</div>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: end; gap: 0.5rem;">
+                        <div class="payment-item-price">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                        <button onclick="removeFromCart(${index})" style="background: #f44336; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 12px;">×</button>
+                    </div>
+                `;
+                cartItems.appendChild(cartItem);
+                total += item.price * item.quantity;
+                totalItems += item.quantity;
+            });
+
+            cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
+            
+            // Atualizar badge do carrinho
+            if (totalItems > 0) {
+                cartBadge.textContent = totalItems;
+                cartBadge.style.display = 'flex';
+            } else {
+                cartBadge.style.display = 'none';
+            }
+            
+            // Atualizar botão do carrinho
+            checkoutBtn.disabled = !isLoggedIn || cart.length === 0;
+            if (!isLoggedIn) {
+                checkoutBtn.textContent = 'Faça login para finalizar';
+            } else if (cart.length === 0) {
+                checkoutBtn.textContent = 'Carrinho vazio';
+            } else {
+                checkoutBtn.textContent = 'Finalizar Compra via PIX';
+            }
+        }
+
+        // Remover do carrinho
+        function removeFromCart(index) {
+            const removedItem = cart[index];
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        // Toggle carrinho
+        function toggleCart() {
+            const cartElement = document.getElementById('cart');
+            const isOpen = cartElement.classList.contains('open');
+            
+            if (isOpen) {
+                cartElement.classList.remove('open');
+            } else {
+                cartElement.classList.add('open');
+            }
+        }
+
+        // Finalizar compra
+        function checkout() {
+            if (!isLoggedIn) {
+                notifications.error('Login Necessário', 'Faça login com Discord para finalizar a compra');
+                return;
+            }
+
+            if (cart.length === 0) {
+                notifications.warning('Carrinho Vazio', 'Adicione produtos ao carrinho primeiro');
+                return;
+            }
+
+            notifications.payment('Abrindo Checkout', 'Preparando seu pedido...');
+            setTimeout(() => {
+                openPaymentModal();
+            }, 500);
+        }
+
+        // Abrir modal de pagamento
+        function openPaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            const paymentItems = document.getElementById('paymentItems');
+            const paymentTotal = document.getElementById('paymentTotal');
+            
+            paymentItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const paymentItem = document.createElement('div');
+                paymentItem.className = 'payment-item';
+                paymentItem.innerHTML = `
+                    <div class="payment-item-left">
+                        <div class="payment-item-icon">${item.icon}</div>
+                        <div class="payment-item-details">
+                            <div class="payment-item-name">${item.title}</div>
+                            <div class="payment-item-desc">Quantidade: ${item.quantity}</div>
+                        </div>
+                    </div>
+                    <div class="payment-item-price">R$ ${(item.price * item.quantity).toFixed(2)}</div>
+                `;
+                paymentItems.appendChild(paymentItem);
+                total += item.price * item.quantity;
+            });
+
+            paymentTotal.textContent = `R$ ${total.toFixed(2)}`;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            notifications.success('Checkout Aberto', 'Complete seu pagamento via PIX');
+        }
+
+        // Fechar modal de pagamento
+        function closePaymentModal() {
+            const modal = document.getElementById('paymentModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            notifications.info('Checkout Fechado', 'Volte quando quiser finalizar');
+        }
+
+        // Copiar código PIX
+        function copyPixCode() {
+            const pixCode = document.getElementById('pixCode').textContent;
+            navigator.clipboard.writeText(pixCode).then(() => {
+                notifications.success('Código Copiado', 'Cole no seu app bancário para pagar');
+            }).catch(() => {
+                notifications.error('Erro ao Copiar', 'Copie manualmente o código PIX');
+            });
+        }
+
+        // Confirmar pagamento
+        function confirmPayment() {
+            loading.show('Processando', 'Confirmando seu pagamento...');
+            
+            setTimeout(() => {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                const totalValue = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                
+                notifications.success('Compra Confirmada', 
+                    `Obrigado pela compra! ${totalItems} item(s) - R$ ${totalValue.toFixed(2)}`);
+                
+                notifications.payment('Próximos Passos', 
+                    'Envie o comprovante no Discord para receber os produtos');
+                
+                cart = [];
+                updateCart();
+                closePaymentModal();
+                toggleCart();
+                loading.hide();
+            }, 2000);
+        }
+
+        // Fechar elementos ao clicar fora
+        document.addEventListener('click', function(e) {
+            const cart = document.getElementById('cart');
+            const cartToggle = document.querySelector('.cart-toggle');
+            const paymentModal = document.getElementById('paymentModal');
+            
+            if (!cart.contains(e.target) && !cartToggle.contains(e.target)) {
+                if (cart.classList.contains('open')) {
+                    cart.classList.remove('open');
+                }
+            }
+            
+            if (e.target === paymentModal) {
+                closePaymentModal();
+            }
+        });
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePaymentModal();
+            }
+        });
+
+        // Adicionar algumas animações extras
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (isLoggedIn) {
+                    notifications.info('Produto Selecionado', 'Clique para adicionar ao carrinho', 1500);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
